@@ -175,26 +175,21 @@ function prompt(title, text, closeTime, close)
 
     T:Create(Prompt.Container, t, {Position = UDim2.new(0, 0, 0, 0)}):Play()
 
-    Prompt.Container.Top.Exit.Button.MouseButton1Click:Connect(
-        function()
-            T:Create(Prompt.Container, t, {Position = UDim2.new(1.15, 0, 0, 0)}):Play()
-            wait(0.48)
-            Prompt:Destroy()
-        end
-    )
+    Prompt.Container.Top.Exit.Button.MouseButton1Click:Connect(function()
+        T:Create(Prompt.Container, t, {Position = UDim2.new(1.15, 0, 0, 0)}):Play()
+        wait(0.48)
+        Prompt:Destroy()
+    end)
 
     Prompt.Container.Top.Exit.Visible = close
-    if type(closeTime) == "number" then
-        task.delay(
-            closeTime,
-            function()
-                if Prompt and Prompt.Parent then
-                    T:Create(Prompt.Container, t, {Position = UDim2.new(1.15, 0, 0, 0)}):Play()
-                    wait(0.48)
-                    Prompt:Destroy()
-                end
+    if typeof(closeTime) == "number" then
+        task.delay(closeTime, function()
+            if Prompt and Prompt.Parent then
+                T:Create(Prompt.Container, t, {Position = UDim2.new(1.15, 0, 0, 0)}):Play()
+                wait(0.48)
+                Prompt:Destroy()
             end
-        )
+        end)
     end
 end
 

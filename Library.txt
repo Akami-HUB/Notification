@@ -1,5 +1,4 @@
 local isExistance = false
-
 local Notifyt = Instance.new("ScreenGui")
 local NotificationParent = Instance.new("ScrollingFrame")
 local UIListLayout = Instance.new("UIListLayout")
@@ -248,4 +247,3 @@ function lib.prompt(title, description, closeTime)
 end
 
 return lib
-``

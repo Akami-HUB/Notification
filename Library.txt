@@ -1,4 +1,5 @@
 local isExistance = false
+
 local Notifyt = Instance.new("ScreenGui")
 local NotificationParent = Instance.new("ScrollingFrame")
 local UIListLayout = Instance.new("UIListLayout")
@@ -18,10 +19,10 @@ local UIPadding_2 = Instance.new("UIPadding")
 local UISizeConstraint = Instance.new("UISizeConstraint")
 
 if game.CoreGui:FindFirstChild("Notifyt") then
-    isExistance = true
-    Notifyt = game.CoreGui.Notifyt
-    NotificationParent = Notifyt.NotificationParent
-    Notification = Notifyt.Notification
+	isExistance = true
+	Notifyt = game.CoreGui.Notifyt
+	NotificationParent = Notifyt.NotificationParent
+	Notification = Notifyt.Notification
 end
 
 Notifyt.Name = "Notifyt"
@@ -32,8 +33,8 @@ Notifyt.ResetOnSpawn = false
 NotificationParent.Name = "NotificationParent"
 NotificationParent.Parent = Notifyt
 NotificationParent.AnchorPoint = Vector2.new(1, 0)
-NotificationParent.BackgroundColor3 = Color3.fromRGB(50, 50, 50) -- Изменено на более темный фон
-NotificationParent.BackgroundTransparency = 0.9 -- Увеличено, чтобы сделать фон более прозрачным
+NotificationParent.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
+NotificationParent.BackgroundTransparency = 1.000
 NotificationParent.BorderSizePixel = 0
 NotificationParent.ClipsDescendants = false
 NotificationParent.Position = UDim2.new(1, 0, 0, -25)
@@ -69,7 +70,7 @@ Container.BorderSizePixel = 0
 Container.Position = UDim2.new(1.14999998, 0, 0, 0)
 Container.Size = UDim2.new(1, 0, 0, 0)
 Container.Image = "rbxassetid://6296184185"
-Container.ImageColor3 = Color3.fromRGB(40, 40, 40) -- Изменено на более темный цвет
+Container.ImageColor3 = Color3.fromRGB(0, 0, 0)
 Container.ImageTransparency = 0.500
 Container.ScaleType = Enum.ScaleType.Slice
 Container.SliceCenter = Rect.new(512, 512, 512, 512)
@@ -77,13 +78,13 @@ Container.SliceScale = 0.012
 
 Top.Name = "Top"
 Top.Parent = Container
-Top.BackgroundColor3 = Color3.fromRGB(240, 240, 240) -- Изменено для более мягкого цвета
+Top.BackgroundColor3 = Color3.fromRGB(248, 248, 248)
 Top.BackgroundTransparency = 1.000
 Top.BorderSizePixel = 0
 Top.Size = UDim2.new(1, 0, 0, 32)
 Top.ZIndex = 3
 Top.Image = "rbxassetid://6276641225"
-Top.ImageColor3 = Color3.fromRGB(60, 60, 60) -- Темный цвет для верхней части
+Top.ImageColor3 = Color3.fromRGB(0, 0, 0)
 Top.ImageTransparency = 0.600
 Top.ScaleType = Enum.ScaleType.Slice
 Top.SliceCenter = Rect.new(256, 256, 256, 256)
@@ -123,7 +124,7 @@ Button.Size = UDim2.new(1, 0, 1, 0)
 Button.ZIndex = 2
 Button.Font = Enum.Font.SourceSans
 Button.Text = ""
-Button.TextColor3 = Color3.fromRGB(255, 0, 0) -- Цвет кнопки изменен на красный
+Button.TextColor3 = Color3.fromRGB(0, 0, 0)
 Button.TextSize = 14.000
 
 Title.Name = "Title"
@@ -144,7 +145,7 @@ Title.TextXAlignment = Enum.TextXAlignment.Left
 Accent.Name = "Accent"
 Accent.Parent = Top
 Accent.AnchorPoint = Vector2.new(0, 1)
-Accent.BackgroundColor3 = Color3.fromRGB(75, 75, 75) -- Цвет акцента изменен
+Accent.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
 Accent.BackgroundTransparency = 0.700
 Accent.BorderSizePixel = 0
 Accent.Position = UDim2.new(0, 0, 1, 0)
@@ -188,9 +189,9 @@ Container.AutomaticSize = Enum.AutomaticSize.Y
 Body.AutomaticSize = Enum.AutomaticSize.Y
 
 if isExistance then
-    UIListLayout:Destroy()
-    UIPadding:Destroy()
-    Container:Destroy()
+	UIListLayout:Destroy()
+	UIPadding:Destroy()
+	Container:Destroy()
 end
 
 local T = game:GetService('TweenService')
@@ -198,46 +199,49 @@ local t = TweenInfo.new(0.5, Enum.EasingStyle.Quint)
 local tp = NotificationParent
 
 function prompt(title, text, closeTime, close)
-    local Prompt = Notification:Clone()
-    local Sound = Instance.new('Sound', Notification)
+	local Prompt = Notification:Clone()
+	local Sound = Instance.new('Sound', Notification)
 
-    Prompt.Visible = true
-    Prompt.Container.Top.Title.Text = title
-    Prompt.Container.Body.Content.Text = text
+	Prompt.Visible = true
+	Prompt.Container.Top.Title.Text = title
+	Prompt.Container.Body.Content.Text = text
 
-    Prompt.Parent = NotificationParent
-    Sound.SoundId = "rbxassetid://6518811702"
-    Sound:Play()
+	Prompt.Parent = NotificationParent
+	Sound.SoundId = "rbxassetid://6518811702"
+	Sound:Play()
 
-    T:Create(Prompt.Container, t, {Position = UDim2.new(0, 0, 0, 0)}):Play()
-    Prompt.AutomaticSize = Enum.AutomaticSize.Y
-    Prompt.Container.AutomaticSize = Enum.AutomaticSize.Y
-    Prompt.Container.Body.AutomaticSize = Enum.AutomaticSize.Y
-    Prompt.Container.Body.Content.AutomaticSize = Enum.AutomaticSize.Y
+	T:Create(Prompt.Container, t, {Position = UDim2.new(0, 0, 0, 0)}):Play()
 
-    Prompt.Container.Top.Exit.Button.MouseButton1Click:Connect(function()
-        T:Create(Prompt.Container, t, {Position = UDim2.new(1.15, 0, 0, 0)}):Play()
-        wait(0.48)
-        Prompt:Destroy()
-    end)
+	Prompt.AutomaticSize = Enum.AutomaticSize.Y
+	Prompt.Container.AutomaticSize = Enum.AutomaticSize.Y
+	Prompt.Container.Body.AutomaticSize = Enum.AutomaticSize.Y
+	Prompt.Container.Body.Content.AutomaticSize = Enum.AutomaticSize.Y
 
-    Prompt.Container.Top.Exit.Visible = close
-    wait(1)
-    Sound:Destroy()
+	Prompt.Container.Top.Exit.Button.MouseButton1Click:Connect(function()
+		T:Create(Prompt.Container, t, {Position = UDim2.new(1.15, 0, 0, 0)}):Play()
+		wait(0.48)
+		Prompt:Destroy()
+	end)
+	
+	Prompt.Container.Top.Exit.Visible = close
 
-    spawn(function()
-        if typeof(closeTime) == "number" then
-            task.wait(closeTime)
-            local s = pcall(function()
-                T:Create(Prompt.Container, t, {Position = UDim2.new(1.15, 0, 0, 0)}):Play()
-                wait(0.48)
-                Prompt:Destroy()
-            end)
-            if not s then
-                print('Already closed.')
-            end
-        end
-    end)
+	wait(1)
+
+	Sound:Destroy()
+	
+	spawn(function()
+		if typeof(closeTime) == "number" then
+			task.wait(closeTime)
+			local s = pcall(function()
+				T:Create(Prompt.Container, t, {Position = UDim2.new(1.15, 0, 0, 0)}):Play()
+				wait(0.48)
+				Prompt:Destroy()
+			end)
+			if not s then
+				print('Already closed.')
+			end
+		end
+	end)
 end
 
 local lib = {}

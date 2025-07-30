@@ -1,0 +1,23 @@
+game:GetService("Players").LocalPlayer.Data.VIPSettings.Value = true
+game:GetService("Players").LocalPlayer.Passes.VIP.Value = true
+game:GetService("Players").LocalPlayer.Passes.EarlyAccess.Value = true
+game:GetService("Players").LocalPlayer.Passes.PrivateServers.Value = true
+game:GetService("Players").LocalPlayer.Passes.AllEmoteSlots.Value = true
+game:GetService("Players").LocalPlayer.Passes.ExtraMember.Value = true
+game:GetService("Players").LocalPlayer.Passes.BlizzardBundle.Value = true
+
+game.ReplicatedStorage.Remotes.Combat.Block:FireServer(unpack({[1]=true}))
+
+setfpscap(1000)
+
+workspace.Misc.Rocks:Destroy()
+workspace.Map.Props.Bushes:Destroy()
+workspace.Map.Screens.Leaderboards:Destroy()
+workspace.Map.Screens.Champions:Destroy()
+game:GetService("ReplicatedStorage").Remotes.Services.Ping:Destroy()
+
+game:GetService("Players").LocalPlayer.Info.Killstreak.Value = 10
+game:GetService("Players").LocalPlayer.Info.Ping.Value = 0
+
+
+

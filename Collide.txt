@@ -1,0 +1,97 @@
+local Players = game:GetService("Players")
+local RunService = game:GetService("RunService")
+local UserInputService = game:GetService("UserInputService")
+local Workspace = game:GetService("Workspace")
+
+local LocalPlayer = Players.LocalPlayer
+local character, humanoid, rootPart
+
+local function updateCharacter()
+    character = LocalPlayer.Character or LocalPlayer.CharacterAdded:Wait()
+    humanoid = character:WaitForChild("Humanoid")
+    rootPart = character:WaitForChild("HumanoidRootPart")
+end
+
+updateCharacter()
+LocalPlayer.CharacterAdded:Connect(updateCharacter)
+
+local cachedParts = {}
+local function cacheParts()
+    cachedParts = {}
+    for _, obj in ipairs(Workspace:GetDescendants()) do
+        if obj:IsA("BasePart") then
+            table.insert(cachedParts, obj)
+        end
+    end
+end
+
+cacheParts()
+
+local flying = false
+local speed = 100
+local keysPressed = {W=false, A=false, S=false, D=false, Space=false, Shift=false}
+
+local function setCollisionForAll(value)
+    for _, part in ipairs(cachedParts) do
+        if part and part.Parent then
+            part.CanCollide = value
+        end
+    end
+end
+
+local function noCollideCharacter()
+    if not character then return end
+    for _, part in ipairs(character:GetDescendants()) do
+        if part:IsA("BasePart") then
+            part.CanCollide = false
+        end
+    end
+end
+
+UserInputService.InputBegan:Connect(function(input, gameProcessed)
+    if gameProcessed then return end
+
+    if input.KeyCode == Enum.KeyCode.T then
+        flying = not flying
+        if humanoid then
+            humanoid.PlatformStand = flying
+        end
+        if flying then
+            noCollideCharacter()
+            setCollisionForAll(false)
+        else
+            setCollisionForAll(true)
+            if rootPart then
+                rootPart.Velocity = Vector3.new(0, 0, 0)
+            end
+        end
+    elseif keysPressed[input.KeyCode.Name] ~= nil then
+        keysPressed[input.KeyCode.Name] = true
+    end
+end)
+
+UserInputService.InputEnded:Connect(function(input)
+    if keysPressed[input.KeyCode.Name] ~= nil then
+        keysPressed[input.KeyCode.Name] = false
+    end
+end)
+
+RunService.RenderStepped:Connect(function()
+    if flying and rootPart then
+        local cam = Workspace.CurrentCamera
+        local moveDir = Vector3.new(0, 0, 0)
+
+        if keysPressed.W then moveDir += cam.CFrame.LookVector end
+        if keysPressed.S then moveDir -= cam.CFrame.LookVector end
+        if keysPressed.A then moveDir -= cam.CFrame.RightVector end
+        if keysPressed.D then moveDir += cam.CFrame.RightVector end
+        if keysPressed.Space then moveDir += cam.CFrame.UpVector end
+        if keysPressed.Shift then moveDir -= cam.CFrame.UpVector end
+
+        if moveDir.Magnitude > 0 then
+            moveDir = moveDir.Unit * speed
+        end
+
+        rootPart.Velocity = moveDir
+    end
+end)
